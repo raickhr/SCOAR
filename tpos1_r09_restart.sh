@@ -28,9 +28,9 @@ export LastNHour=$3
 export parameter_ROMS2WRF=yes
 export parameter_RunWRF=yes
 export parameter_WRF2ROMS=yes
-	# addition for WRF ONLY run but process WRF_Out from WRF_Out
-	# this should be no in case of the coupled run
-	export WRF2ROMS_WRFONLY=no
+# addition for WRF ONLY run but process WRF_Out from WRF_Out
+# this should be no in case of the coupled run
+export WRF2ROMS_WRFONLY=no
 export parameter_RunROMS=yes
 
 # included an option to run WW3 but do not feed to WRF HS: 3/10/2022
@@ -40,24 +40,24 @@ export parameter_RunROMS=yes
 
 export parameter_run_WW3=yes
 export WRF_Rerun=yes
-	if [ $parameter_run_WW3 = yes ]; then
-# if WW3 is on, isftcflx option has to defined in physics of namelist.input 
-# two options are available for now (May 2021)
-# isftcflx=351 : Uses the wave-age only formulation of COARE3.5 in WRF surface layer scheme
-# isftcflx=352 : Uses the wave-age and wave height formulation of COARE3.5 in WRF surface layer scheme (default)
-# isftcflx=353 : 352 + theta 
-# isftcflx=354 : 352 but with mean period
-# isftcflx=355 : Porchetta
-# isftcflx=3500 : Obtain the total friction velocity from WW3 to compute momentum and fluxes.  # 11/28/2022
+if [ $parameter_run_WW3 = yes ]; then
+        # if WW3 is on, isftcflx option has to defined in physics of namelist.input 
+        # two options are available for now (May 2021)
+        # isftcflx=351 : Uses the wave-age only formulation of COARE3.5 in WRF surface layer scheme
+        # isftcflx=352 : Uses the wave-age and wave height formulation of COARE3.5 in WRF surface layer scheme (default)
+        # isftcflx=353 : 352 + theta 
+        # isftcflx=354 : 352 but with mean period
+        # isftcflx=355 : Porchetta
+        # isftcflx=3500 : Obtain the total friction velocity from WW3 to compute momentum and fluxes.  # 11/28/2022
 	export isftcflx=3500
 
-# if sending ocean surface current to WW3
+        # if sending ocean surface current to WW3
 	export wave_current=yes
 
-# yes WW32WRF if WW3 is defined
+        # yes WW32WRF if WW3 is defined
 	export parameter_WW32WRF=yes
 
-# ROMS_wave: use wave dissipiation in ROMS GLS scheme;
+        # ROMS_wave: use wave dissipiation in ROMS GLS scheme;
 	export ROMS_wave=yes
 	export parameter_WW32ROMS=yes
 
@@ -72,18 +72,18 @@ fi
 
 # two options added: for reruning WRF only purpose (WW3 outputs are already there).
 if [ $WRF_Rerun = yes ]; then
-# #1. added an option that even if  parameter_run_WW3=no, do WW32WRF.
+        # #1. added an option that even if  parameter_run_WW3=no, do WW32WRF.
         export parameter_WW32WRF=yes
-# #2. Run WRF with WBF without even when WW3 is not on
-#  if wrflowinp has all the necessary wave fields..
-# useful or rerunning WRF only from the coupled run for additional outputs.
+        # #2. Run WRF with WBF without even when WW3 is not on
+        #  if wrflowinp has all the necessary wave fields..
+        # useful or rerunning WRF only from the coupled run for additional outputs.
         export isftcflx=
 fi
 
 export WRF_ROMS_SAME_GRID=yes
 export SSS_CORRECTION=no
-	# SSS files should reside under ROMS_Input_mercator
-	SSS_path=
+# SSS files should reside under ROMS_Input_mercator
+SSS_path=
 
 # ROMS: new option: restart from ocean_rst.nc
 export ROMS_Rst=yes
@@ -109,8 +109,8 @@ export WRF_PRS=yes
 export WRF_ZLEV=yes
 # WRF time-series option added 2021/06/04
 export WRF_TS=no
-        # specify the number of stations in tslist
-        export WRF_TS_num_station = 4
+# specify the number of stations in tslist
+export WRF_TS_num_station = 4
 export WRF_AFWA=no
 export WRF_FDDA=no
 
@@ -138,11 +138,11 @@ export wrfinput_file_d01=wrfinput_d01
 export wrffdda_file_d01=wrffdda_d01
 export wrfbdy_file_d01=wrfbdy_d01
 export wrflowinp_file_d01=wrflowinp_d01
-        if [ $WRF_Domain -eq 2 ]; then
+if [ $WRF_Domain -eq 2 ]; then
         export wrfinput_file_d02=wrfinput_d02
         export wrflowinp_file_d02=wrflowinp_d02
         export wrffdda_file_d02=wrffdda_file_d02 # HS added 2022 07 28
-        fi
+fi
 
 if [ $RESTART = yes ]; then
 	export already_copied_wrflowinp=yes
@@ -175,44 +175,44 @@ export Nameit_WW3=ww3-$gridname
 # WRF_PHYS should be set as default
 # If parameter_run_WW3 = yes, Set CPL_PHYS=WRF_PHYS
 export CPL_PHYS=WRF_PHYS
-	if [ $CPL_PHYS = ROMS_PHYS -a $parameter_run_WW3 = yes ]; then
-		echo "If parameter_run_WW3 = yes , Set CPL_PHYS=WRF_PHYS"
-		exit 8 
-	fi
-	if [ $CPL_PHYS = WRF_PHYS ]; then
-	export BULK_FLUX=no
-	export LONGWAVE_OUT=no
-	export BULK=nobulk
-	fi
-	if [ $CPL_PHYS = ROMS_PHYS ]; then
-	export BULK_FLUX=yes
-	export LONGWAVE_OUT=yes
-	export BULK=bulk
-	fi
+if [ $CPL_PHYS = ROMS_PHYS -a $parameter_run_WW3 = yes ]; then
+        echo "If parameter_run_WW3 = yes , Set CPL_PHYS=WRF_PHYS"
+        exit 8 
+fi
+if [ $CPL_PHYS = WRF_PHYS ]; then
+        export BULK_FLUX=no
+        export LONGWAVE_OUT=no
+        export BULK=nobulk
+fi
+if [ $CPL_PHYS = ROMS_PHYS ]; then
+        export BULK_FLUX=yes
+        export LONGWAVE_OUT=yes
+        export BULK=bulk
+fi
 # UaUo
 export UaUo=yes
 # NEED TO THINK
-        if [ $CPL_PHYS = WRF_PHYS ]; then
- 	# UaUo is calculated as UOCE/VOCE entered in wrflowinp
- 	export ROMS2WRF=ROMS2WRF_use_qck_uoce.sh
-         elif [ $CPL_PHYS = ROMS_PHYS  ]; then
- 	# UaUo is calculated using uauo.sh
- 	export ROMS2WRF=ROMS2WRF_use_qck.sh
- 	fi
+if [ $CPL_PHYS = WRF_PHYS ]; then
+        # UaUo is calculated as UOCE/VOCE entered in wrflowinp
+        export ROMS2WRF=ROMS2WRF_use_qck_uoce.sh
+elif [ $CPL_PHYS = ROMS_PHYS  ]; then
+        # UaUo is calculated using uauo.sh
+        export ROMS2WRF=ROMS2WRF_use_qck.sh
+fi
 
 ## THIS IS TO BE FIXED.... In rename Uauo to smooth... and drop Urel Verel part
 ## Interactive Smoothing (Putrasahan et al. 2013a,b; Seo et al. 2016; Seo 2017)
 export SmoothSST=no #in ROMS2WRF
 export SmoothUV=no  #in UaUo
-	if [ $SmoothUV = yes -a $UaUo = no ]; then
-	echo "When SmoothUV is yes, UaUo should be yes"
-	exit 8
-	fi
+if [ $SmoothUV = yes -a $UaUo = no ]; then
+        echo "When SmoothUV is yes, UaUo should be yes"
+        exit 8
+fi
 #since we're using lat/lon, dist is in deg.
 # note this is a loess smoothing scale:
 if [ $SmoothSST = yes -o $SmoothUV = yes ]; then
-export spanx=20.0
-export spany=5.0
+        export spanx=20.0
+        export spany=5.0
 fi
 
 # River for ROMS
@@ -231,32 +231,32 @@ fi
 # ROMS BC files SODA_1day or SODA_mon
 export ROMS_BCFile=mercator
 export ROMS_BCFile_Freq=1day  
-        export ROMS_BCFile_Dir=\$Couple_Misc_Data_Dir/ROMS_Input/$ROMS_BCFile/$ROMS_BCFile_Freq
-        export ROMS_BCFile_Name=mercator.bry_1dy
+export ROMS_BCFile_Dir=\$Couple_Misc_Data_Dir/ROMS_Input/$ROMS_BCFile/$ROMS_BCFile_Freq
+export ROMS_BCFile_Name=mercator.bry_1dy
 
 # WRF/ROMS Initial condition for coupled somulation
 # 1. start from reanaylsis data (for both WRF and ROMS) or spinup (for ROMS)
 # 2. or start from coupled spin-up runs (for WRF and ROMS): this method was done for nascar runs (Seo 2017)
 export restart_from_coupled_spinup=no
 # restart from coupled spinup run?  this will do 
-        #1. link wrfrst file and change namelist WRF_RESTART option accordingly in couple.sh
-        #2. ICFile is set to the ROMS coupled spinup run
+#1. link wrfrst file and change namelist WRF_RESTART option accordingly in couple.sh
+#2. ICFile is set to the ROMS coupled spinup run
 if [ $restart_from_coupled_spinup = yes ]; then
         # this is where wrfrst files are located
-export WRF_RST_coupled_spinup=
-export ROMS_ICFile=
+        export WRF_RST_coupled_spinup=
+        export ROMS_ICFile=
 else
-#export ROMS_ICFile=$PROJECT/hseo4/SCOAR/Data/domains/tpos/tpos1/ROMS_Input/mercator/1day/mercator.ini_1dy_20200102.nc
-export ROMS_ICFile=$PROJECT/hseo4/Git/wrf-ww3-ustar-working/SCOAR2/Data/domains/tpos/tpos1/ROMS_Input/mercator/1day/mercator.ini_1dy_20200102.nc
+        #export ROMS_ICFile=$PROJECT/hseo4/SCOAR/Data/domains/tpos/tpos1/ROMS_Input/mercator/1day/mercator.ini_1dy_20200102.nc
+        export ROMS_ICFile=$PROJECT/hseo4/Git/wrf-ww3-ustar-working/SCOAR2/Data/domains/tpos/tpos1/ROMS_Input/mercator/1day/mercator.ini_1dy_20200102.nc
 fi
 
 # WW3 Initial File : from WW3 Spinup
 if [ $parameter_run_WW3 = yes ]; then
-export WW3_spinup=no
+        export WW3_spinup=no
 	if [ $WW3_spinup = yes ]; then
-	# provide WW3 spinup restart file
-	export WW3_ICFile=
-	export WW3_ICFile_NC=
+                # provide WW3 spinup restart file
+                export WW3_ICFile=
+                export WW3_ICFile_NC=
 	fi
 fi
 
@@ -265,17 +265,17 @@ export Couple_Run_Dir=$PROJECT/hseo4/Git/wrf-ww3-ustar-working/SCOAR2/Run/$gridn
 
 # executables and inputs files
 export ROMS_Executable_Filename=oceanM_nobulk_notide_GLS_noWdissip_notide
-        # as ROMS output is an averaged fileds. produce only one time-step
-        export ROMS_Input_Filename=ocean.in
+# as ROMS output is an averaged fileds. produce only one time-step
+export ROMS_Input_Filename=ocean.in
 
-        # as WRF output is an snapshot, produce 1-hrly fields for given CF and then average
-        #export WRF_Namelist_input=namelist.input_$gridname\_$CF\hr
-	# BE SURE TO INCLUDE write_hist_at_0h_rst  
-        #export WRF_Namelist_input=namelist.input
-        export WRF_Namelist_input=namelist.input
+# as WRF output is an snapshot, produce 1-hrly fields for given CF and then average
+#export WRF_Namelist_input=namelist.input_$gridname\_$CF\hr
+# BE SURE TO INCLUDE write_hist_at_0h_rst  
+#export WRF_Namelist_input=namelist.input
+export WRF_Namelist_input=namelist.input
 
-	# if add/remove output option is defined, need to be stated in the namelist.input file
-	export iofields_filename=yes
+# if add/remove output option is defined, need to be stated in the namelist.input file
+export iofields_filename=yes
 
 export WW3_exe_Filename=ww3_*
 
@@ -306,14 +306,14 @@ mkdir -p $Couple_Home_Dir/accounting
 #####--------------------- END OF USER DEFINITION -----------------------#####
 echo "CF is $CF"
 if [ $CPL_PHYS = WRF_PHYS ]; then
-   echo "Use WRF's boudary layer physics!"
+        echo "Use WRF's boudary layer physics!"
 elif [ $CPL_PHYS = ROMS_PHYS ]; then
-   echo "Use ROMS' Bulk formula"
+        echo "Use ROMS' Bulk formula"
 fi
 if [ $UaUo = yes ]; then
-   echo "Ua-Uo is ON"
+        echo "Ua-Uo is ON"
 elif [ $UaUo = no ]; then
-   echo "Ua-Uo is OFF"
+        echo "Ua-Uo is OFF"
 fi
 #####--------------------- END OF PRINT OUT -----------------------#####
 
@@ -330,61 +330,61 @@ export Couple_Shell_Dir=$Couple_Shell_Dir_common/$gridname2/$gridname
 
 #Couple Lib Directories
 export Couple_Lib_Dir=$Couple_Home_Dir/Lib
-  export Couple_Lib_auxfiles_Dir=$Couple_Lib_Dir/aux-files
-  export Couple_Lib_codes_Dir=$Couple_Lib_Dir/codes
-  export Couple_Lib_exec_Dir=$Couple_Lib_Dir/exec
-        export Couple_Lib_exec_coupler_Dir=$Couple_Lib_exec_Dir/Coupler_$FC
-        export Couple_Lib_exec_ROMS_Dir=$Couple_Lib_exec_Dir/ROMS/$gridname2/$gridname
-        export Couple_Lib_exec_WRF_Dir=$Couple_Lib_exec_Dir/WRF/$gridname2/$gridname
-        export Couple_Lib_exec_WW3_Dir=$Couple_Lib_exec_Dir/WW3/$gridname2/$gridname
-  export Couple_Lib_grids_Dir=$Couple_Lib_Dir/grids/$gridname2/$gridname
-	export Couple_Lib_grids_WRF_Dir=$Couple_Lib_grids_Dir/WRF
-	export Couple_Lib_grids_ROMS_Dir=$Couple_Lib_grids_Dir/ROMS
+export Couple_Lib_auxfiles_Dir=$Couple_Lib_Dir/aux-files
+export Couple_Lib_codes_Dir=$Couple_Lib_Dir/codes
+export Couple_Lib_exec_Dir=$Couple_Lib_Dir/exec
+export Couple_Lib_exec_coupler_Dir=$Couple_Lib_exec_Dir/Coupler_$FC
+export Couple_Lib_exec_ROMS_Dir=$Couple_Lib_exec_Dir/ROMS/$gridname2/$gridname
+export Couple_Lib_exec_WRF_Dir=$Couple_Lib_exec_Dir/WRF/$gridname2/$gridname
+export Couple_Lib_exec_WW3_Dir=$Couple_Lib_exec_Dir/WW3/$gridname2/$gridname
+export Couple_Lib_grids_Dir=$Couple_Lib_Dir/grids/$gridname2/$gridname
+export Couple_Lib_grids_WRF_Dir=$Couple_Lib_grids_Dir/WRF
+export Couple_Lib_grids_ROMS_Dir=$Couple_Lib_grids_Dir/ROMS
 # r07 or r09
-	export Couple_Lib_grids_WW3_Dir=$Couple_Lib_grids_Dir/WW3/test500
-  export Couple_Lib_template_Dir=$Couple_Lib_Dir/template/$gridname2/$gridname
-  export Couple_Lib_utils_Dir=$Couple_Lib_Dir/utils
+export Couple_Lib_grids_WW3_Dir=$Couple_Lib_grids_Dir/WW3/test500
+export Couple_Lib_template_Dir=$Couple_Lib_Dir/template/$gridname2/$gridname
+export Couple_Lib_utils_Dir=$Couple_Lib_Dir/utils
 
 export Couple_Model_Dir=$Couple_Home_Dir/Model
 
-	#WRF
-        export Couple_WRF_Dir=$Couple_Model_Dir/WRF/$gridname2/$gridname/WRF_code_copy_nasa_Aug2022_ustarww3
-		echo "Make sure you have the correct WRF working directory."
-			export Model_WRF_Dir=$Couple_WRF_Dir/test/em_real_$RUN_ID
-			       if [ ! -s $Model_WRF_Dir ]; then
-                                cp -r $Couple_WRF_Dir/test/em_real $Model_WRF_Dir || exit 8
-                                fi
-			export Couple_WPS_grid_Dir=$Couple_WPS_Dir/domains/$gridname2/$gridname
-		export Couple_WRF_Info_Dir=$Couple_WRF_Dir/Info
-		export Couple_WRF_geog_Dir=$WRF_Info_Dir/geog #geogrid
-	# Not needed, all we need is just an executable
-	#ROMS
-	#export Couple_ROMS_Dir=$Couple_Home_Dir/Model/ROMS$vROMS
-	#	export Couple_ROMS_External_Dir=$Couple_ROMS_Dir/ROMS/External
-	#	export Couple_ROMS_Include_Dir=$Couple_ROMS_Dir/ROMS/Include
+#WRF
+export Couple_WRF_Dir=$Couple_Model_Dir/WRF/$gridname2/$gridname/WRF_code_copy_nasa_Aug2022_ustarww3
+echo "Make sure you have the correct WRF working directory."
+export Model_WRF_Dir=$Couple_WRF_Dir/test/em_real_$RUN_ID
+if [ ! -s $Model_WRF_Dir ]; then
+        cp -r $Couple_WRF_Dir/test/em_real $Model_WRF_Dir || exit 8
+fi
+export Couple_WPS_grid_Dir=$Couple_WPS_Dir/domains/$gridname2/$gridname
+export Couple_WRF_Info_Dir=$Couple_WRF_Dir/Info
+export Couple_WRF_geog_Dir=$WRF_Info_Dir/geog #geogrid
+# Not needed, all we need is just an executable
+#ROMS
+#export Couple_ROMS_Dir=$Couple_Home_Dir/Model/ROMS$vROMS
+#	export Couple_ROMS_External_Dir=$Couple_ROMS_Dir/ROMS/External
+#	export Couple_ROMS_Include_Dir=$Couple_ROMS_Dir/ROMS/Include
 
 # WRF_ROMS misc Data directory (containing ROMS/WRF initial/boundary files...)
 export Couple_Misc_Data_Dir=$Couple_Home_Dir/Data/domains/$gridname2/$gridname
-        export WRF_Input_Data=$Couple_Misc_Data_Dir/WRF_Input/
-        export ROMS_Input_Data=$Couple_Misc_Data_Dir/ROMS_Input
-        mkdir -p $Couple_Misc_Data_Dir $WRF_Input_Data $ROMS_Input_Data
+export WRF_Input_Data=$Couple_Misc_Data_Dir/WRF_Input/
+export ROMS_Input_Data=$Couple_Misc_Data_Dir/ROMS_Input
+mkdir -p $Couple_Misc_Data_Dir $WRF_Input_Data $ROMS_Input_Data
 
-	ROMS_BCFile_Dir=`eval echo $ROMS_BCFile_Dir`
-		echo "ROMS BC Directory: $ROMS_BCFile_Dir"
-	ROMS_ICFile=`eval echo $ROMS_ICFile`
-		echo "ROMS IC: $ROMS_ICFile"
+ROMS_BCFile_Dir=`eval echo $ROMS_BCFile_Dir`
+echo "ROMS BC Directory: $ROMS_BCFile_Dir"
+ROMS_ICFile=`eval echo $ROMS_ICFile`
+echo "ROMS IC: $ROMS_ICFile"
 
 #General OUTPUT Directories
 export Couple_Data_Dir=$Couple_Run_Dir/Data
- export Couple_Data_WRF_Dir=$Couple_Data_Dir/WRF 
- export Couple_Data_ROMS_Dir=$Couple_Data_Dir/ROMS
- export Couple_Data_WW3_Dir=$Couple_Data_Dir/WW3
- export Couple_Data_tempo_files_Dir=$Couple_Data_Dir/tempo_files
+export Couple_Data_WRF_Dir=$Couple_Data_Dir/WRF 
+export Couple_Data_ROMS_Dir=$Couple_Data_Dir/ROMS
+export Couple_Data_WW3_Dir=$Couple_Data_Dir/WW3
+export Couple_Data_tempo_files_Dir=$Couple_Data_Dir/tempo_files
 
-   for DIR in $Couple_Run_Dir $Couple_Data_Dir $Couple_Data_WRF_Dir $Couple_Data_ROMS_Dir $Couple_Data_tempo_files_Dir 
-    do 
-    mkdir -p $DIR 2>/dev/null
-   done
+for DIR in $Couple_Run_Dir $Couple_Data_Dir $Couple_Data_WRF_Dir $Couple_Data_ROMS_Dir $Couple_Data_tempo_files_Dir 
+do 
+        mkdir -p $DIR 2>/dev/null
+done
 
 #ROMS OUTPUT Directories
 export ROMS_His_Dir=$Couple_Data_ROMS_Dir/His
@@ -392,7 +392,7 @@ export ROMS_Avg_Dir=$Couple_Data_ROMS_Dir/Avg
 export ROMS_Rst_Dir=$Couple_Data_ROMS_Dir/Rst
 export ROMS_Qck_Dir=$Couple_Data_ROMS_Dir/Qck
 export ROMS_process_Dir=$Couple_Data_ROMS_Dir/process
-        if [ $SmoothSST = yes -o $SmoothUV = yes ]; then
+if [ $SmoothSST = yes -o $SmoothUV = yes ]; then
 	export ROMS_Smooth_Dir=$Couple_Data_ROMS_Dir/Smooth
 	export ROMS_Smooth_Before_Dir=$Couple_Data_ROMS_Dir/Smooth/before
 	export ROMS_Smooth_After_Dir=$Couple_Data_ROMS_Dir/Smooth/after
@@ -401,55 +401,55 @@ export ROMS_process_Dir=$Couple_Data_ROMS_Dir/process
 	mkdir -p $ROMS_Smooth_Before_Dir
 	mkdir -p $ROMS_Smooth_After_Dir
 	mkdir -p $ROMS_Smooth_Diff_Dir
-	fi
+fi
 export ROMS_Dia_Dir=$Couple_Data_ROMS_Dir/Dia
 export ROMS_Frc_Dir=$Couple_Data_ROMS_Dir/Frc
 export ROMS_Runlog_Dir=$Couple_Data_ROMS_Dir/ROMS_Log
 
-   for DIR in $ROMS_His_Dir $ROMS_Avg_Dir $ROMS_Rst_Dir $ROMS_Qck_Dir $ROMS_process_Dir $ROMS_Runlog_Dir $ROMS_Frc_Dir $ROMS_Dia_Dir
-    do
+for DIR in $ROMS_His_Dir $ROMS_Avg_Dir $ROMS_Rst_Dir $ROMS_Qck_Dir $ROMS_process_Dir $ROMS_Runlog_Dir $ROMS_Frc_Dir $ROMS_Dia_Dir
+do
     mkdir -p $DIR 2>/dev/null
-   done
+done
 
 #WRF OUTPUT Directores
 export WRF_Runlog_Dir=$Couple_Data_WRF_Dir/WRF_Log
 export WRF_Output_Dir=$Couple_Data_WRF_Dir/WRF_Out
 export WRF_RST_Dir=$Couple_Data_WRF_Dir/WRF_RST
 export WRF_process_Dir=$Couple_Data_WRF_Dir/process
-       if [ $WRF_PRS = yes ]; then
+if [ $WRF_PRS = yes ]; then
        export WRF_PRS_Dir=$Couple_Data_WRF_Dir/WRF_PRS
-       fi
-       if [ $WRF_ZLEV = yes ]; then
+fi
+if [ $WRF_ZLEV = yes ]; then
        export WRF_ZLEV_Dir=$Couple_Data_WRF_Dir/WRF_ZLEV
-       fi
-       if [ $WRF_AFWA = yes ]; then
+fi
+if [ $WRF_AFWA = yes ]; then
        export WRF_AFWA_Dir=$Couple_Data_WRF_Dir/WRF_AFWA
-       fi
-       if [ $WRF_TS = yes ]; then
+fi
+if [ $WRF_TS = yes ]; then
        export WRF_TS_Dir=$Couple_Data_WRF_Dir/WRF_TS
-       fi
+fi
 
 export WRF_NamelistInput_Dir=$Couple_Data_WRF_Dir/WRF_NamelistInput
 
-   for DIR in $WRF_Runlog_Dir $WRF_Output_Dir $WRF_Output_Dir $WRF_NamelistInput_Dir $WRF_RST_Dir $WRF_TS_Dir $WRF_process_Dir $WRF_ZLEV
-    do
+for DIR in $WRF_Runlog_Dir $WRF_Output_Dir $WRF_Output_Dir $WRF_NamelistInput_Dir $WRF_RST_Dir $WRF_TS_Dir $WRF_process_Dir $WRF_ZLEV
+do
     mkdir -p $DIR 2>/dev/null
-   done
+done
 
 if [ $parameter_run_WW3 = yes -o $WRF_Rerun = yes ]; then
-#WW3 OUTPUT Directories
-export WW3_Out_Dir=$Couple_Data_WW3_Dir/Out
-export WW3_Outnc_Dir=$Couple_Data_WW3_Dir/Outnc
-export WW3_Rst_Dir=$Couple_Data_WW3_Dir/Rst
-export WW3_Frc_Dir=$Couple_Data_WW3_Dir/Frc
-export WW3_Log_Dir=$Couple_Data_WW3_Dir/Log
-export WW3_Exe_Dir=$Couple_Data_WW3_Dir/Exe # where WW3 will be run
-export WW3_process_Dir=$Couple_Data_WW3_Dir/process
+        #WW3 OUTPUT Directories
+        export WW3_Out_Dir=$Couple_Data_WW3_Dir/Out
+        export WW3_Outnc_Dir=$Couple_Data_WW3_Dir/Outnc
+        export WW3_Rst_Dir=$Couple_Data_WW3_Dir/Rst
+        export WW3_Frc_Dir=$Couple_Data_WW3_Dir/Frc
+        export WW3_Log_Dir=$Couple_Data_WW3_Dir/Log
+        export WW3_Exe_Dir=$Couple_Data_WW3_Dir/Exe # where WW3 will be run
+        export WW3_process_Dir=$Couple_Data_WW3_Dir/process
 
-   for DIR in $WW3_Out_Dir $WW3_Outnc_Dir $WW3_Rst_Dir $WW3_Frc_Dir $WW3_Log_Dir $WW3_Exe_Dir $WW3_process_Dir
-    do
-    mkdir -p $DIR 2>/dev/null
-   done
+        for DIR in $WW3_Out_Dir $WW3_Outnc_Dir $WW3_Rst_Dir $WW3_Frc_Dir $WW3_Log_Dir $WW3_Exe_Dir $WW3_process_Dir
+        do
+                mkdir -p $DIR 2>/dev/null
+        done
 fi
 
 #####--------------------- END OF EXPORT -----------------------#####
@@ -460,31 +460,31 @@ fi
 rm -f $Couple_Run_Dir/*.sh 2>/dev/null
 
 # Copy main_couple script
- cp $0 $Couple_Run_Dir
+cp $0 $Couple_Run_Dir
 
 # Copy couple.sh
-    cp $Couple_Shell_Dir/couple_with_ww3_restart.sh $Couple_Run_Dir || exit 8
+cp $Couple_Shell_Dir/couple_with_ww3_restart.sh $Couple_Run_Dir || exit 8
 
 # Copy WRF2ROMS
-    cp $Couple_Shell_Dir/WRF2ROMS_$BULK\.sh $Couple_Run_Dir/WRF2ROMS.sh || exit 8
+cp $Couple_Shell_Dir/WRF2ROMS_$BULK\.sh $Couple_Run_Dir/WRF2ROMS.sh || exit 8
 if [ $CPL_PHYS = ROMS_PHYS -a $WRF2ROMS_WRFONLY = yes ]; then
     cp $Couple_Shell_Dir/WRF2ROMS_bulk_WRFONLY.sh $Couple_Run_Dir/WRF2ROMS_WRFONLY.sh || exit 8
 fi
 
 # Copy prepareROMS.sh
- if [ $ROMS_Rst = yes ]; then
- cp $Couple_Shell_Dir_common/prepareROMS_Rst.sh $Couple_Run_Dir/prepareROMS.sh || exit 8
- cp $Couple_Shell_Dir_common/edit_ROMS_ocean_in.sh $Couple_Run_Dir/edit_ROMS_ocean_in.sh || exit 8
- else  # this should be removed in the future.. and call prepareROMS_Rst.sh prepareROMS.sh
- cp $Couple_Shell_Dir_common/prepareROMS.sh $Couple_Run_Dir/prepareROMS.sh || exit 8
- fi
+if [ $ROMS_Rst = yes ]; then
+        cp $Couple_Shell_Dir_common/prepareROMS_Rst.sh $Couple_Run_Dir/prepareROMS.sh || exit 8
+        cp $Couple_Shell_Dir_common/edit_ROMS_ocean_in.sh $Couple_Run_Dir/edit_ROMS_ocean_in.sh || exit 8
+else  # this should be removed in the future.. and call prepareROMS_Rst.sh prepareROMS.sh
+        cp $Couple_Shell_Dir_common/prepareROMS.sh $Couple_Run_Dir/prepareROMS.sh || exit 8
+fi
 
 # Copy ROMS2WRF (and associated shell scripts)
- cp $Couple_Shell_Dir/ROMS2WRF.sh $Couple_Run_Dir/ROMS2WRF.sh || exit 8
+cp $Couple_Shell_Dir/ROMS2WRF.sh $Couple_Run_Dir/ROMS2WRF.sh || exit 8
 # this is to modify SST wrflowinp_d01 at intial time ; but let's not do this.
- 	#cp $Couple_Shell_Dir_common/edit_sst_wrfinput.sh $Couple_Run_Dir || exit 8
+#cp $Couple_Shell_Dir_common/edit_sst_wrfinput.sh $Couple_Run_Dir || exit 8
 ####
- 	cp $Couple_Shell_Dir_common/edit_WRF_namelist.sh $Couple_Run_Dir || exit 8
+cp $Couple_Shell_Dir_common/edit_WRF_namelist.sh $Couple_Run_Dir || exit 8
 
 ##### 2. files for model run #####
 #COPY NECESSARY FILES TO $Couple_Data_Dir
@@ -514,28 +514,28 @@ export nd=$nd
 echo "ROMS number of vertical levels, nd= ",$nd
 
 if [ $parameter_run_WW3 = yes -o $WRF_Rerun = yes ]; then
-# WW3 namelist edit
-cp $Couple_Shell_Dir_common/edit_ww3_prnc.sh $WW3_Exe_Dir/edit_ww3_prnc.sh || exit 8
-cp $Couple_Shell_Dir_common/edit_ww3_shel.sh $WW3_Exe_Dir/edit_ww3_shel.sh || exit 8
-cp $Couple_Shell_Dir_common/edit_ww3_ounf.sh $WW3_Exe_Dir/edit_ww3_ounf.sh || exit 8
+        # WW3 namelist edit
+        cp $Couple_Shell_Dir_common/edit_ww3_prnc.sh $WW3_Exe_Dir/edit_ww3_prnc.sh || exit 8
+        cp $Couple_Shell_Dir_common/edit_ww3_shel.sh $WW3_Exe_Dir/edit_ww3_shel.sh || exit 8
+        cp $Couple_Shell_Dir_common/edit_ww3_ounf.sh $WW3_Exe_Dir/edit_ww3_ounf.sh || exit 8
 
-# Copy WW32WRF 
-cp $Couple_Shell_Dir/WW32WRF.sh $Couple_Run_Dir/WW32WRF.sh || exit 8
-# Copy WW32ROMS
-if [ $parameter_WW32ROMS = yes ]; then
-cp $Couple_Shell_Dir/WW32ROMS.sh $Couple_Run_Dir/WW32ROMS.sh || exit 8
-fi
+        # Copy WW32WRF 
+        cp $Couple_Shell_Dir/WW32WRF.sh $Couple_Run_Dir/WW32WRF.sh || exit 8
+        # Copy WW32ROMS
+        if [ $parameter_WW32ROMS = yes ]; then
+                cp $Couple_Shell_Dir/WW32ROMS.sh $Couple_Run_Dir/WW32ROMS.sh || exit 8
+        fi
 
-# WW3 executables
-ln -fs $Couple_Lib_exec_WW3_Dir/exec/$WW3_exe_Filename $WW3_Exe_Dir || exit 8
-ln -fs $Couple_Lib_grids_WW3_Dir/*ww3 $WW3_Exe_Dir || exit 8
+        # WW3 executables
+        ln -fs $Couple_Lib_exec_WW3_Dir/exec/$WW3_exe_Filename $WW3_Exe_Dir || exit 8
+        ln -fs $Couple_Lib_grids_WW3_Dir/*ww3 $WW3_Exe_Dir || exit 8
 
-# WW3 namelist only what isused...
-cp     $Couple_Lib_exec_WW3_Dir/ww3_prnc_wind.nml    $WW3_Exe_Dir || exit 8
-cp     $Couple_Lib_exec_WW3_Dir/ww3_prnc_current.nml $WW3_Exe_Dir || exit 8
-cp     $Couple_Lib_exec_WW3_Dir/ww3_shel.nml         $WW3_Exe_Dir || exit 8
-cp     $Couple_Lib_exec_WW3_Dir/ww3_ounf.nml         $WW3_Exe_Dir || exit 8
-cp     $Couple_Lib_exec_WW3_Dir/namelists.nml        $WW3_Exe_Dir || exit 8
+        # WW3 namelist only what isused...
+        cp     $Couple_Lib_exec_WW3_Dir/ww3_prnc_wind.nml    $WW3_Exe_Dir || exit 8
+        cp     $Couple_Lib_exec_WW3_Dir/ww3_prnc_current.nml $WW3_Exe_Dir || exit 8
+        cp     $Couple_Lib_exec_WW3_Dir/ww3_shel.nml         $WW3_Exe_Dir || exit 8
+        cp     $Couple_Lib_exec_WW3_Dir/ww3_ounf.nml         $WW3_Exe_Dir || exit 8
+        cp     $Couple_Lib_exec_WW3_Dir/namelists.nml        $WW3_Exe_Dir || exit 8
 fi
 
 #####--------------------- END OF COPYING FILES  -----------------------#####
@@ -543,5 +543,5 @@ fi
 # COMPILE COUPLER CODES
 # STARTING RUN
 cd $Couple_Run_Dir || exit 8
-   $Couple_Run_Dir/couple_with_ww3_restart.sh || exit 8
+        $Couple_Run_Dir/couple_with_ww3_restart.sh || exit 8
 echo "DONE"

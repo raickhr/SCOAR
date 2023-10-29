@@ -158,8 +158,8 @@ export ROMS_Qck=yes
 export Use_SST_In=Qck
 
 export MPI=yes
-export vROMS=38
-export vWRF=422
+export vROMS=38      ### WHAT IS THIS ?
+export vWRF=422      ### WHAT IS THIS ?
 
 #Naming the WRF and ROMS model (resolution & region)
 export Nameit_WRF=wrf-$gridname
@@ -229,10 +229,16 @@ if [ $Tide = yes ]; then
 fi
 
 # ROMS BC files SODA_1day or SODA_mon
+############## ROMS BOUNDARY CONDITIONS HERE ####################
+#################################################################
+#################################################################
 export ROMS_BCFile=mercator
 export ROMS_BCFile_Freq=1day  
 export ROMS_BCFile_Dir=\$Couple_Misc_Data_Dir/ROMS_Input/$ROMS_BCFile/$ROMS_BCFile_Freq
 export ROMS_BCFile_Name=mercator.bry_1dy
+############## ROMS BOUNDARY CONDITIONS HERE ####################
+#################################################################
+#################################################################
 
 # WRF/ROMS Initial condition for coupled somulation
 # 1. start from reanaylsis data (for both WRF and ROMS) or spinup (for ROMS)
@@ -247,7 +253,16 @@ if [ $restart_from_coupled_spinup = yes ]; then
         export ROMS_ICFile=
 else
         #export ROMS_ICFile=$PROJECT/hseo4/SCOAR/Data/domains/tpos/tpos1/ROMS_Input/mercator/1day/mercator.ini_1dy_20200102.nc
+        
+        ############## ROMS INITIAL CONDITIONS HERE  ####################
+        #################################################################
+        #################################################################
         export ROMS_ICFile=$PROJECT/hseo4/Git/wrf-ww3-ustar-working/SCOAR2/Data/domains/tpos/tpos1/ROMS_Input/mercator/1day/mercator.ini_1dy_20200102.nc
+        #################################################################
+        #################################################################
+        #################################################################
+        
+
 fi
 
 # WW3 Initial File : from WW3 Spinup
@@ -264,6 +279,9 @@ fi
 export Couple_Run_Dir=$PROJECT/hseo4/Git/wrf-ww3-ustar-working/SCOAR2/Run/$gridname2/$gridname/$RUN_ID
 
 # executables and inputs files
+################################################################################
+###################    ROMS EXECUTABLE FILE AND INPUT     ######################
+################################################################################
 export ROMS_Executable_Filename=oceanM_nobulk_notide_GLS_noWdissip_notide
 # as ROMS output is an averaged fileds. produce only one time-step
 export ROMS_Input_Filename=ocean.in
@@ -272,6 +290,12 @@ export ROMS_Input_Filename=ocean.in
 #export WRF_Namelist_input=namelist.input_$gridname\_$CF\hr
 # BE SURE TO INCLUDE write_hist_at_0h_rst  
 #export WRF_Namelist_input=namelist.input
+
+
+################################################################################
+###################    WRF EXECUTABLE FILE AND INPUT     ######################
+################################################################################
+
 export WRF_Namelist_input=namelist.input
 
 # if add/remove output option is defined, need to be stated in the namelist.input file
@@ -364,6 +388,10 @@ export Couple_WRF_geog_Dir=$WRF_Info_Dir/geog #geogrid
 #	export Couple_ROMS_Include_Dir=$Couple_ROMS_Dir/ROMS/Include
 
 # WRF_ROMS misc Data directory (containing ROMS/WRF initial/boundary files...)
+
+##############################################################################
+#          WRF ROMS INITIAL AND BOUNDARY DIRECTORIES                         #
+##############################################################################
 export Couple_Misc_Data_Dir=$Couple_Home_Dir/Data/domains/$gridname2/$gridname
 export WRF_Input_Data=$Couple_Misc_Data_Dir/WRF_Input/
 export ROMS_Input_Data=$Couple_Misc_Data_Dir/ROMS_Input
